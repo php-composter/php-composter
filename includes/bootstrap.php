@@ -26,7 +26,7 @@ if (array_key_exists($hook, $config)) {
     ksort($array);
     foreach ($array as $methods) {
         foreach ($methods as $method) {
-            $method();
+            $method($hook, $root);
         }
     }
 }

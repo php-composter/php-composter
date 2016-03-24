@@ -45,10 +45,13 @@ class Example
 
     /**
      * Example pre-commit action method.
+     *
+     * @var string $hook Name of the hook that was triggered.
+     * @var string $root Root folder in which the hook was triggered.
      */
-    public static function preCommit()
+    public static function preCommit($hook, $root)
     {
-        echo 'PHP Composter Example Pre-Commit Hook' . PHP_EOL;
+        echo 'Example Pre-Commit Hook ' . $hook . ' @ ' . $root . PHP_EOL;
     }
 }
 ```
