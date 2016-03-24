@@ -1,0 +1,7 @@
+#!/bin/bash
+
+hook=`basename "$0"`
+php=`which php`
+package_root=`pwd`
+$php $package_root/.git/php-composter/includes/bootstrap.php $hook $package_root
+

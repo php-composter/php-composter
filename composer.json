@@ -1,0 +1,24 @@
+{
+  "name": "php-composter/php-composter",
+  "description": "Git Hooks Management through Composer.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alain Schlesser",
+      "email": "alain.schlesser@gmail.com"
+    }
+  ],
+  "type": "composer-plugin",
+  "require": {
+    "php": ">=5.4",
+    "composer-plugin-api": "^1"
+  },
+  "autoload": {
+    "psr-4": {
+      "PHPComposter\\PHPComposter\\": "src/"
+    }
+  },
+  "extra": {
+    "class": "PHPComposter\\PHPComposter\\Plugin"
+  }
+}
