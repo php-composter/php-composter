@@ -61,7 +61,10 @@ class Installer extends LibraryInstaller
     {
         $path = $this->getInstallPath($package);
         if ($this->io->isVerbose()) {
-            $this->io->write('Symlinking PHP Composter action ' . $path, true);
+            $this->io->write(sprintf(
+                _('Symlinking PHP Composter action %1$s'),
+                $path
+            ), true);
         }
         parent::install($repo, $package);
         foreach ($package->getExtra() as $prioritizedHook => $method) {
@@ -73,7 +76,12 @@ class Installer extends LibraryInstaller
                 $priority = 10;
             }
             if ($this->io->isVeryVerbose()) {
-                $this->io->write('Adding method "' . $method . '" to hook "' . $hook . '" with priority ' . $priority);
+                $this->io->write(sprintf(
+                    _('Adding method "%1$s" to hook "%2$s" with priority %3$s'),
+                    $method,
+                    $hook,
+                    $priority
+                ), true);
             }
             HookConfig::addEntry($hook, $method, $priority);
         }
@@ -127,11 +135,12 @@ class Installer extends LibraryInstaller
         $prefix       = mb_substr($package->getPrettyName(), 0, $prefixLength);
 
         if (self::PREFIX !== $prefix) {
-            throw new InvalidArgumentException(
-                'Unable to install PHP Composter action, actions '
-                . 'should always start their package name with '
-                . '"' . self::PREFIX . '"'
-            );
+            throw new InvalidArgumentException(sprintf(
+                _('Unable to install PHP Composter action, actions '
+                  . 'should always start their package name with '
+                  . '"%1$s"'),
+                self::PREFIX
+            ));
         }
 
         return mb_substr($package->getPrettyName(), $prefixLength);

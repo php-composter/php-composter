@@ -142,7 +142,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         static::$io = $io;
         if (static::$io->isVerbose()) {
-            static::$io->write('Activating PHP Composter plugin', true);
+            static::$io->write(_('Activating PHP Composter plugin'), true);
         }
         $installer = new Installer(static::$io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
@@ -164,13 +164,19 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         $composterPath = Paths::getPath('git_composter');
         if (static::$io->isVeryVerbose()) {
-            static::$io->write('Removing previous PHP Composter actions at ' . $composterPath, true);
+            static::$io->write(sprintf(
+                _('Removing previous PHP Composter actions at %1$s'),
+                $composterPath
+            ), true);
         }
         $filesystem->emptyDirectory($composterPath, true);
 
         $composterTemplate = Paths::getPath('root_template');
         if (static::$io->isVeryVerbose()) {
-            static::$io->write('Removing previous PHP Composter code at ' . $composterTemplate, true);
+            static::$io->write(sprintf(
+                _('Removing previous PHP Composter code at %1$s'),
+                $composterTemplate
+            ), true);
         }
         $filesystem->emptyDirectory($composterTemplate, true);
     }
@@ -193,7 +199,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         foreach ($files as $file) {
             if (static::$io->isVeryVerbose()) {
-                static::$io->write('Symlinking ' . $rootTemplate . $file . ' to ' . $composterTemplate . $file);
+                static::$io->write(sprintf(
+                    _('Symlinking %1$s to %2$s'),
+                    $rootTemplate . $file,
+                    $composterTemplate . $file
+                ));
             }
             $filesystem->relativeSymlink($composterTemplate . $file, $rootTemplate . $file);
         }
@@ -215,7 +225,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         foreach ($this->getGitHookNames() as $githook) {
             $hookPath = $hooksPath . $githook;
             if (static::$io->isDebug()) {
-                static::$io->write('Symlinking ' . $hookPath . ' to ' . $gitScriptPath);
+                static::$io->write(sprintf(
+                    _('Symlinking %1$s to %2$s'),
+                    $hookPath,
+                    $gitScriptPath
+                ));
             }
             $filesystem->relativeSymlink($gitScriptPath, $hookPath);
         }
