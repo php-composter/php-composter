@@ -1,7 +1,31 @@
 #!/bin/bash
 
-hook=`basename "$0"`
-php=`which php`
-package_root=`pwd`
-$php $package_root/.git/php-composter/includes/bootstrap.php $hook $package_root
+# ------------------------------------------------------------
+# Git Hooks Management through Composer.
+#
+# @package   PHPComposter\PHPComposter
+# @author    Alain Schlesser <alain.schlesser@gmail.com>
+# @license   MIT
+# @link      http://www.brightnucleus.com/
+# @copyright 2016 Alain Schlesser, Bright Nucleus
+# ------------------------------------------------------------
 
+# Collect environment data.
+hook=`basename "$0"`
+package_root=`pwd`
+
+# Make sure we have a PHP binary.
+php=`which php`
+if [[ $? -ne 0 ]]; then
+    printf "PHP binary could not be found. PHP Composter aborted.\n"
+    exit
+fi
+
+# Verify that the bootstrap.php file exists.
+if [[ ! -f $package_root/.git/php-composter/includes/bootstrap.php ]]; then
+    printf "PHP Composter bootstrap file was not found. Please reinstall.\n"
+    exit
+fi
+
+# Launch the engine.
+$php $package_root/.git/php-composter/includes/bootstrap.php $hook $package_root
