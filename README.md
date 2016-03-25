@@ -12,6 +12,7 @@ This is a Composer plugin that manages Git pre- & post-hooks through Composer de
 ## Table Of Contents
 
 * [Installation](#installation)
+* [Existing PHP Composter Actions](#existing-php-composter-actions)
 * [Creating a New PHP Composter Action](#creating-a-new-php-composter-action)
 * [Using Existing PHP Composter Actions in Your Projects](#using-existing-php-composter-actions-in-your-projects)
 * [Skipping Installation of PHP Composter Actions](#skipping-installation-of-php-composter-actions)
@@ -20,6 +21,12 @@ This is a Composer plugin that manages Git pre- & post-hooks through Composer de
 ## Installation
 
 You should not need to install this package directly. It should come as a dependency of a package that is of type `php-composter-action`.
+
+## Existing PHP Composter Actions
+
+* **[PHP Composter PHPCS PSR2](https://github.com/php-composter/php-composter-phpcs-psr2)**
+
+    > Check your PHP source code for PSR-2 compliance before committing.
 
 ## Creating a New PHP Composter Action
 
