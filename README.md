@@ -2,10 +2,10 @@
 
 ### Git Hooks Management through Composer.
 
-[![Latest Stable Version](https://poser.pugx.org/brightnucleus/php-composter/v/stable)](https://packagist.org/packages/brightnucleus/php-composter)
-[![Total Downloads](https://poser.pugx.org/brightnucleus/php-composter/downloads)](https://packagist.org/packages/brightnucleus/php-composter)
-[![Latest Unstable Version](https://poser.pugx.org/brightnucleus/php-composter/v/unstable)](https://packagist.org/packages/brightnucleus/php-composter)
-[![License](https://poser.pugx.org/brightnucleus/php-composter/license)](https://packagist.org/packages/brightnucleus/php-composter)
+[![Latest Stable Version](https://poser.pugx.org/php-composter/php-composter/v/stable)](https://packagist.org/packages/php-composter/php-composter)
+[![Total Downloads](https://poser.pugx.org/php-composter/php-composter/downloads)](https://packagist.org/packages/php-composter/php-composter)
+[![Latest Unstable Version](https://poser.pugx.org/php-composter/php-composter/v/unstable)](https://packagist.org/packages/php-composter/php-composter)
+[![License](https://poser.pugx.org/php-composter/php-composter/license)](https://packagist.org/packages/php-composter/php-composter)
 
 This is a Composer plugin that manages Git pre- & post-hooks through Composer dependencies. Actions you want to be executed on Git hooks can simply be `require`d as `--dev` dependencies, and will immediately become active on `composer install`.
 
