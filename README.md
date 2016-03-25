@@ -25,17 +25,30 @@ You should not need to install this package directly. It should come as a depend
 
 To build a new PHP Composter action, you need to proceed as follows:
 
-1. [Create a new Composer Package with Public Static Methods](#create-a-new-composer-package-with-public-static-methods)
-2. [Add the Class to Composer Autoloader](#add-the-class-to-composer-autoloader)
-3. [Set the Composer Package Type to `php-composter-action`](#set-the-composer-package-type-to-php-composter-action)
-4. [Add `php-composter/php-composter` as a dependency](#add-php-composter-php-composter-as-a-dependency)
-5. [Configure Git Hooks through Composer Extra key](#configure-git-hooks-through-composer-extra-key)
+1. [Create a Composer Package with a Valid Name](#create-a-composer-package-with-a-valid-name)
+2. [Add Public Static Methods](#add-public-static-methods)
+3. [Add the Class to Composer Autoloader](#add-the-class-to-composer-autoloader)
+4. [Set the Composer Package Type to `php-composter-action`](#set-the-composer-package-type-to-php-composter-action)
+5. [Add `php-composter/php-composter` as a dependency](#add-php-composter-php-composter-as-a-dependency)
+6. [Configure Git Hooks through Composer Extra key](#configure-git-hooks-through-composer-extra-key)
 
-### Create a new Composer Package with Public Static Methods
+### Create a Composer Package with a Valid Name
+
+Create a new Composer package with the following naming requirements:
+* The vendor must be `php-composter`
+* The package name be `php-composter-<action intent>`
+
+**Example:**
+
+```BASH
+composer init --name php-composter/php-composter-example
+```
+
+### Add Public Static Methods
 
 PHP Composter allows you to attach PHP methods to Git hooks. These methods need to be public static methods, so that they can be called by PHP-Composter without requiring any specific context.
 
-Example code:
+**Example:**
 
 ```PHP
 <?php namespace PHPComposter\PHPComposterExample;
@@ -58,7 +71,9 @@ class Example
 
 ### Set the Composer Package Type to `php-composter-action`
 
-You need to set the type of your Composer package in your `composer.json` file to `php-composter-action`:
+You need to set the type of your Composer package in your `composer.json` file to `php-composter-action`.
+
+**Example:**
 
 ```JSON
 {
@@ -72,6 +87,8 @@ You need to set the type of your Composer package in your `composer.json` file t
 ### Add the Class to Composer Autoloader
 
 Composer's Autoloader will be initialized for each Git hook, so make sure you've registered your newly created class correctly.
+
+**Example:**
 
 ```JSON
 {
@@ -87,7 +104,9 @@ Composer's Autoloader will be initialized for each Git hook, so make sure you've
 
 ### Add `php-composter/php-composter` as a dependency
 
-You need to set the type of your Composer package in your `composer.json` file to `php-composter-action`:
+You need to set the type of your Composer package in your `composer.json` file to `php-composter-action`.
+
+**Example:**
 
 ```JSON
 {
@@ -102,6 +121,8 @@ You need to set the type of your Composer package in your `composer.json` file t
 ### Configure Git Hooks through Composer Extra key
 
 Finally, use the `extra` key in the package's `composer.json` to attach each of your methods to a specific Git hook.
+
+**Example:**
 
 ```JSON
 {
