@@ -11,6 +11,16 @@
 
 namespace PHPComposter\PHPComposter;
 
+/**
+ * Class Paths.
+ *
+ * This static class generates and distributes all the paths used by PHP Composter.
+ *
+ * @since   0.1.0
+ *
+ * @package PHPComposter\PHPComposter
+ * @author  Alain Schlesser <alain.schlesser@gmail.com>
+ */
 class Paths
 {
 

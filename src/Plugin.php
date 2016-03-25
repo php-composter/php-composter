@@ -22,6 +22,8 @@ use Composer\Util\Filesystem;
 /**
  * Class Plugin.
  *
+ * This main class activates and sets up the PHP Composter system within the package's .git folder.
+ *
  * @since   0.1.0
  *
  * @package PHPComposter\PHPComposter

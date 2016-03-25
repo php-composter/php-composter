@@ -19,6 +19,8 @@ use InvalidArgumentException;
 /**
  * Class Installer.
  *
+ * The Installer class tells Composer where to install each package of type `php-composter-action`.
+ *
  * @since   0.1.0
  *
  * @package PHPComposter\PHPComposter
