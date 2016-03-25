@@ -99,7 +99,7 @@ You need to set the type of your Composer package in your `composer.json` file t
   "name": "php-composter/php-composter-example",
   "description": "PHP Composter Example.",
   "type": "php-composter-action",
-  [...]
+  "[...]": ""
 }
 ```
 
@@ -111,13 +111,13 @@ Composer's Autoloader will be initialized for each Git hook, so make sure you've
 
 ```JSON
 {
-  [...]
+  "[...]": "",
   "autoload": {
     "psr-4": {
       "PHPComposter\\PHPComposterExample\\": "src/"
     }
   },
-  [...]
+  "[...]": ""
 }
 ```
 
@@ -129,11 +129,11 @@ You need to set the type of your Composer package in your `composer.json` file t
 
 ```JSON
 {
-  [...]
+  "[...]": "",
   "require": {
     "php-composter/php-composter": "^0.1",
   },
-  [...]
+  "[...]": ""
 }
 ```
 
@@ -145,7 +145,7 @@ Finally, use the `extra` key in the package's `composer.json` to attach each of 
 
 ```JSON
 {
-  [...]
+  "[...]": "",
   "extra": {
     "20.pre-commit": "PHPComposter\\PHPComposterExample\\Example::preCommit"
   }
