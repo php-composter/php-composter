@@ -26,7 +26,8 @@ You should not need to install this package directly. It should come as a depend
 To build a new PHP Composter action, you need to proceed as follows:
 
 1. [Create a Composer Package with a Valid Name](#create-a-composer-package-with-a-valid-name)
-2. [Add Public Static Methods](#add-public-static-methods)
+2. [Extend `BaseAction` class](#extend-baseaction-class)
+2. [Add Public Methods](#add-public-methods)
 3. [Add the Class to Composer Autoloader](#add-the-class-to-composer-autoloader)
 4. [Set the Composer Package Type to `php-composter-action`](#set-the-composer-package-type-to-php-composter-action)
 5. [Add `php-composter/php-composter` as a dependency](#add-php-composter-php-composter-as-a-dependency)
@@ -44,16 +45,34 @@ Create a new Composer package with the following naming requirements:
 composer init --name php-composter/php-composter-example
 ```
 
-### Add Public Static Methods
+### Extend `BaseAction` class
 
-PHP Composter allows you to attach PHP methods to Git hooks. These methods need to be public static methods, so that they can be called by PHP-Composter without requiring any specific context.
+Create a new class that `extends PHPComposter\PHPComposter\BaseAction`.
 
 **Example:**
 
 ```PHP
 <?php namespace PHPComposter\PHPComposterExample;
 
-class Example
+use PHPComposter\PHPComposter\BaseAction;
+
+class Example extends BaseAction
+{
+    // [...]
+}
+```
+
+### Add Public Methods
+
+PHP Composter allows you to attach PHP methods to Git hooks. These methods need to be publicly accessible, so that they can be called by the PHP-Composter bootstrapping script.
+
+**Example:**
+
+```PHP
+<?php
+// [...]
+
+class Example extends BaseAction
 {
 
     /**
@@ -62,9 +81,9 @@ class Example
      * @var string $hook Name of the hook that was triggered.
      * @var string $root Root folder in which the hook was triggered.
      */
-    public static function preCommit($hook, $root)
+    public function preCommit()
     {
-        echo 'Example Pre-Commit Hook ' . $hook . ' @ ' . $root . PHP_EOL;
+        echo 'Example Pre-Commit Hook ' . $this->hook . ' @ ' . $this->root . PHP_EOL;
     }
 }
 ```
