@@ -28,6 +28,8 @@ You should not need to install this package directly. It should come as a depend
 
     > Check your PHP source code for PSR-2 compliance before committing.
 
+*(more actions will soon be available)*
+
 ## Creating a New PHP Composter Action
 
 To build a new PHP Composter action, you need to proceed as follows:
