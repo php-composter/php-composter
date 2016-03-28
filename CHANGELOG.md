@@ -3,8 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- List of existing actions in `README.md`.
+
 ### Changed
 - Don't require package name vendor to be `php-composter`.
+
+### Fixes
+- Correct `README.md` badges.
+- Alternative way of simulating JSON comments in `README.md`.
 
 ## [0.1.3] - 2016-03-25
 ### Added
