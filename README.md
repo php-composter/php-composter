@@ -146,7 +146,7 @@ You need to set the type of your Composer package in your `composer.json` file t
 
 ### Configure Git Hooks through Composer Extra key
 
-Finally, use the `extra` key in the package's `composer.json` to attach each of your methods to a specific Git hook.
+Finally, add a new entry `"php-composter-hooks"` to the `extra` key in the package's `composer.json` to attach each of your methods to a specific Git hook.
 
 **Example:**
 
@@ -154,7 +154,9 @@ Finally, use the `extra` key in the package's `composer.json` to attach each of 
 {
   "[...]": "",
   "extra": {
-    "20.pre-commit": "PHPComposter\\PHPComposterExample\\Example::preCommit"
+    "php-composter-hooks": {
+      "20.pre-commit": "PHPComposter\\PHPComposterExample\\Example::preCommit"
+    }
   }
 }
 ```

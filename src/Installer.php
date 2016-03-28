@@ -29,8 +29,9 @@ use InvalidArgumentException;
 class Installer extends LibraryInstaller
 {
 
-    const PREFIX = 'php-composter-';
-    const TYPE   = 'php-composter-action';
+    const EXTRA_KEY = 'php-composter-hooks';
+    const PREFIX    = 'php-composter-';
+    const TYPE      = 'php-composter-action';
 
     /**
      * Get the installation path of the package.
@@ -66,8 +67,10 @@ class Installer extends LibraryInstaller
                 $path
             ), true);
         }
+
         parent::install($repo, $package);
-        foreach ($package->getExtra() as $prioritizedHook => $method) {
+
+        foreach ($this->getHooks($package) as $prioritizedHook => $method) {
             $array = explode('.', $prioritizedHook);
             if (count($array) > 1) {
                 list($priority, $hook) = $array;
@@ -75,6 +78,7 @@ class Installer extends LibraryInstaller
                 $hook     = $array[0];
                 $priority = 10;
             }
+
             if ($this->io->isVeryVerbose()) {
                 $this->io->write(sprintf(
                     _('Adding method "%1$s" to hook "%2$s" with priority %3$s'),
@@ -154,5 +158,24 @@ class Installer extends LibraryInstaller
         }
 
         return mb_substr($name, $prefixLength);
+    }
+
+    /**
+     * Get the hooks configuration from package extra data.
+     *
+     * @since 0.2.0
+     *
+     * @param PackageInterface $package Package to inspect.
+     *
+     * @return array Array of prioritized hooks.
+     */
+    protected function getHooks(PackageInterface $package)
+    {
+        $extra = $package->getExtra();
+        if ( ! array_key_exists(self::EXTRA_KEY, $extra)) {
+            return array();
+        }
+
+        return $extra[self::EXTRA_KEY];
     }
 }
