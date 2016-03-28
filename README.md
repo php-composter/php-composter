@@ -9,6 +9,8 @@
 
 This is a Composer plugin that manages Git pre- & post-hooks through Composer dependencies. Actions you want to be executed on Git hooks can simply be `require`d as `--dev` dependencies, and will immediately become active on `composer install`.
 
+Introductory post: [Adding Git Hooks Through Composer Dev-Dependencies](https://www.alainschlesser.com/php-composter/)
+
 ## Table Of Contents
 
 * [Installation](#installation)
