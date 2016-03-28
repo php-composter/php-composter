@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Changed
+- Don't require package name vendor to be `php-composter`.
+
 ## [0.1.3] - 2016-03-25
 ### Added
 - Refactor bootstrapping to use an instantiated object.

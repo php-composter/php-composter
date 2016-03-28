@@ -29,7 +29,7 @@ use InvalidArgumentException;
 class Installer extends LibraryInstaller
 {
 
-    const PREFIX = 'php-composter/php-composter-';
+    const PREFIX = 'php-composter-';
     const TYPE   = 'php-composter-action';
 
     /**
@@ -131,18 +131,28 @@ class Installer extends LibraryInstaller
      */
     protected function getSuffix(PackageInterface $package)
     {
+        $result = (array)explode('/', $package->getPrettyName());
+        if (count($result) !== 2) {
+            throw new InvalidArgumentException(sprintf(
+                _('Unable to install PHP Composter action, could '
+                  . 'not extract action name from package "%1$s"'),
+                $package->getPrettyName()
+            ));
+        }
+
+        list($vendor, $name) = $result;
         $prefixLength = mb_strlen(self::PREFIX);
-        $prefix       = mb_substr($package->getPrettyName(), 0, $prefixLength);
+        $prefix       = mb_substr($name, 0, $prefixLength);
 
         if (self::PREFIX !== $prefix) {
             throw new InvalidArgumentException(sprintf(
                 _('Unable to install PHP Composter action, actions '
                   . 'should always start their package name with '
-                  . '"%1$s"'),
+                  . '"<vendor>/%1$s"'),
                 self::PREFIX
             ));
         }
 
-        return mb_substr($package->getPrettyName(), $prefixLength);
+        return mb_substr($name, $prefixLength);
     }
 }

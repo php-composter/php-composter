@@ -44,9 +44,7 @@ To build a new PHP Composter action, you need to proceed as follows:
 
 ### Create a Composer Package with a Valid Name
 
-Create a new Composer package with the following naming requirements:
-* The vendor must be `php-composter`
-* The package name be `php-composter-<action intent>`
+Create a new Composer package with the following naming pattern: `<vendor>/php-composter-<action intent>`
 
 **Example:**
 
