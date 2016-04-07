@@ -1,24 +1,47 @@
 {
-  "name": "php-composter/php-composter",
-  "description": "Git Hooks Management through Composer.",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Alain Schlesser",
-      "email": "alain.schlesser@gmail.com"
-    }
-  ],
-  "type": "composer-plugin",
-  "require": {
-    "php": ">=5.4",
-    "composer-plugin-api": "^1"
-  },
-  "autoload": {
-    "psr-4": {
-      "PHPComposter\\PHPComposter\\": "src/"
-    }
-  },
-  "extra": {
-    "class": "PHPComposter\\PHPComposter\\Plugin"
-  }
+	"name"              : "php-composter/php-composter",
+	"description"       : "Git Hooks Management through Composer.",
+	"license"           : "MIT",
+	"authors"           : [
+		{
+			"name"     : "Alain Schlesser",
+			"email"    : "alain.schlesser@gmail.com",
+			"homepage" : "https://www.alainschlesser.com",
+			"role"     : "Developer"
+		}
+	],
+	"type"              : "composer-plugin",
+	"minimum-stability" : "dev",
+	"prefer-stable"     : true,
+	"support"           : {
+		"issues" : "https://github.com/php-composter/php-composter/issues",
+		"wiki"   : "https://github.com/php-composter/php-composter/wiki",
+		"source" : "https://github.com/php-composter/php-composter/releases",
+		"docs"   : "https://github.com/php-composter/php-composter/blob/master/README.md"
+	},
+	"require"           : {
+		"php"                 : "^5.4 || ^7.0",
+		"composer/installers" : "^1",
+		"composer/composer"   : "^1",
+		"composer-plugin-api" : "^1"
+	},
+	"require-dev"       : {
+		"phpunit/phpunit" : "5.3.*"
+	},
+	"autoload"          : {
+		"psr-4" : {
+			"PHPComposter\\PHPComposter\\" : "src/"
+		}
+	},
+	"autoload-dev"      : {
+		"psr-4" : {
+			"PHPComposter\\Tests\\" : "tests/src/"
+		}
+	},
+	"config"            : {
+		"optimize-autoloader" : true
+	},
+	"extra"             : {
+		"class" : "PHPComposter\\PHPComposter\\Plugin"
+	}
 }
