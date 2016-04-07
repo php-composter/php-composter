@@ -110,7 +110,7 @@ class BaseAction
      *
      * @var string $pattern Grep pattern to filter the staged files against.
      * @return array
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     protected function getStagedFiles( $pattern )
     {
@@ -129,7 +129,7 @@ class BaseAction
         );
 
         if ( 2 === $return ) {
-            throw new \Exception( 'Fetching staged files returns an error' );
+            throw new \RuntimeException( 'Fetching staged files returns an error' );
         }
 
         // No files found
@@ -163,7 +163,8 @@ class BaseAction
     /**
      * Get the tree object to check against.
      *
-     * @since 0.1.3
+     * @return string HEAD or hash representing empty/initial commit state
+     * @throws \RuntimeException
      */
     protected function getAgainst()
     {
@@ -174,7 +175,7 @@ class BaseAction
         );
 
         if ( 2 === $return ) {
-            throw new \Exception( 'Finding the HEAD commit hash returned an error' );
+            throw new \RuntimeException( 'Finding the HEAD commit hash returned an error' );
         }
 
         // Check if we're on a semi-secret empty tree
