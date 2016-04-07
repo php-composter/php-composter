@@ -109,6 +109,7 @@ class BaseAction
      * @since 0.1.3
      *
      * @var string $pattern Grep pattern to filter the staged files against.
+     * @return array
      */
     protected function getStagedFiles($pattern)
     {

@@ -13,7 +13,7 @@ $vendor = dirname( dirname( __FILE__ ) ) . '/vendor';
 if ( ! realpath( "$vendor/" ) )
 	die(
 		 'Please install dependencies via Composer before running tests: '
-		.'wget https://getcomposer.org/composer.phar'
+		.'`wget https://getcomposer.org/composer.phar`'
 	);
 
 require_once "$vendor/autoload.php";
