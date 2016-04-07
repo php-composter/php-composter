@@ -1,1 +1,8 @@
+## IDEs
+/.idea/
+
+## Package Managers
 /vendor/
+
+## Test Suite
+/build/
