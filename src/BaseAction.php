@@ -110,26 +110,54 @@ class BaseAction
      *
      * @var string $pattern Grep pattern to filter the staged files against.
      * @return array
+     * @throws \Exception
      */
-    protected function getStagedFiles($pattern)
+    protected function getStagedFiles( $pattern )
     {
-        $filter = empty($pattern) ? '' : ' | grep ' . $pattern;
+        $filter = empty( $pattern )
+            ? ''
+            : " | grep {$pattern}";
         
-        ob_start();
-        $result = shell_exec('git diff-index --name-only --diff-filter=ACMR ' . $this->getAgainst() . $filter);
-        ob_clean();
+        exec(
+            sprintf(
+                'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
+                escapeshellarg( $this->getAgainst() ),
+                escapeshellarg( $filter )
+            ),
+            $files,
+            $return
+        );
 
-        $files = explode("\n", $result);
+        if ( 2 === $return ) {
+            throw new \Exception( 'Fetching staged files returns an error' );
+        }
 
-        $files = array_filter($files, function ($file) {
-            return ! empty($file);
-        });
+        // No files found
+        if ( 1 === $return )
+            return [];
 
-        array_walk($files, function (&$file) {
-            $file = $this->root . DIRECTORY_SEPARATOR . $file;
-        });
+        // Filter out empty and NULL values
+        $files = array_filter( $files );
+
+        $files = array_walk(
+            $files,
+            [ $this, 'prependRoot' ],
+            $this->root
+        );
 
         return $files;
+    }
+
+	/**
+     * Prepend the repository root path
+     *
+     * @param string $file  File name by reference
+     * @param int    $index
+     * @param string $root
+     */
+    private function prependRoot( &$file, $index, $root )
+    {
+        $file = $root . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
@@ -139,15 +167,22 @@ class BaseAction
      */
     protected function getAgainst()
     {
-        ob_start();
-        $result = shell_exec('git rev-parse --verify --quiet HEAD');
-        ob_clean();
-        // Check if we're on a semi-secret empty tree
-        if ($result) {
-            return 'HEAD';
-        } else {
-            // Initial commit: diff against an empty tree object
-            return '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+        exec(
+            'LC_ALL=en_US.UTF-8 git rev-parse --verify --quiet HEAD',
+            $output,
+            $return
+        );
+
+        if ( 2 === $return ) {
+            throw new \Exception( 'Finding the HEAD commit hash returned an error' );
         }
+
+        // Check if we're on a semi-secret empty tree
+        if ( $output ) {
+            return 'HEAD';
+        }
+
+        // Initial commit: diff against an empty tree object
+        return '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
     }
 }
