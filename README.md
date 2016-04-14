@@ -30,7 +30,21 @@ You should not need to install this package directly. It should come as a depend
 
     > Check your PHP source code for PSR-2 compliance before committing.
 
-*(more actions will soon be available)*
+* **PHP Composter PHPCS WordPress** _(coming soon)_
+
+    > Check your PHP source code for WordPress Coding Standards compliance before committing.
+
+* **PHP Composter PHPUnit** _(coming soon)_
+
+    > Run a PHPUnit test suite before committing.
+
+* **PHP Composter PHP Syntax Checker** _(coming soon)_
+
+    > Validate the PHP syntax before committing.
+
+* **PHP Composter Commit Regex** _(coming soon)_
+
+    > Check your commit messages against a regular expression pattern, to enforce a commit message standard.
 
 ## Creating a New PHP Composter Action
 
