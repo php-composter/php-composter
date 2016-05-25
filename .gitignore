@@ -1,1 +1,9 @@
+## IDEs
+/.idea/
+
+## Package Managers
+composer.phar
 /vendor/
+
+## Test Suite
+/build/

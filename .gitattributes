@@ -1,0 +1,10 @@
+# Git attributes
+# Do not ship what we do not need
+# Tests will normally be run with primary packages, not this one
+.gitattributes     export-ignore
+.gitignore         export-ignore
+tests/             export-ignore
+phpunit.xml.dist   export-ignore
+
+# Auto detect text files and perform LF normalization
+* text=auto
