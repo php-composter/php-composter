@@ -117,16 +117,14 @@ class BaseAction
         $filter = empty( $pattern )
             ? ''
             : " | grep {$pattern}";
-        
-        exec(
-            sprintf(
-                'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
-                escapeshellarg( $this->getAgainst() ),
-                $filter
-            ),
-            $files,
-            $return
+
+        $command = sprintf(
+            'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
+            escapeshellarg( $this->getAgainst() ),
+            $filter
         );
+
+        exec($command, $files, $return);
 
         if ( 2 === $return ) {
             throw new \RuntimeException( 'Fetching staged files returns an error' );
