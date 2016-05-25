@@ -112,50 +112,39 @@ class BaseAction
      * @return array
      * @throws \RuntimeException
      */
-    protected function getStagedFiles( $pattern )
+    protected function getStagedFiles($pattern)
     {
-        $filter = empty( $pattern )
+        $filter = empty($pattern)
             ? ''
             : " | grep {$pattern}";
 
         $command = sprintf(
             'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
-            escapeshellarg( $this->getAgainst() ),
+            escapeshellarg($this->getAgainst()),
             $filter
         );
 
         exec($command, $files, $return);
 
-        if ( 2 === $return ) {
-            throw new \RuntimeException( 'Fetching staged files returns an error' );
+        if (2 === $return) {
+            throw new \RuntimeException('Fetching staged files returns an error');
         }
 
         // No files found
-        if ( 1 === $return )
+        if (1 === $return) {
             return [];
+        }
 
         // Filter out empty and NULL values
-        $files = array_filter( $files );
+        $files = array_filter($files);
 
         array_walk(
             $files,
-            [ $this, 'prependRoot' ],
+            [$this, 'prependRoot'],
             $this->root
         );
 
         return $files;
-    }
-
-	/**
-     * Prepend the repository root path
-     *
-     * @param string $file  File name by reference
-     * @param int    $index
-     * @param string $root
-     */
-    private function prependRoot( &$file, $index, $root )
-    {
-        $file = $root . DIRECTORY_SEPARATOR . $file;
     }
 
     /**
@@ -172,16 +161,28 @@ class BaseAction
             $return
         );
 
-        if ( 2 === $return ) {
-            throw new \RuntimeException( 'Finding the HEAD commit hash returned an error' );
+        if (2 === $return) {
+            throw new \RuntimeException('Finding the HEAD commit hash returned an error');
         }
 
         // Check if we're on a semi-secret empty tree
-        if ( $output ) {
+        if ($output) {
             return 'HEAD';
         }
 
         // Initial commit: diff against an empty tree object
         return '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+    }
+
+    /**
+     * Prepend the repository root path
+     *
+     * @param string $file File name by reference
+     * @param int    $index
+     * @param string $root
+     */
+    private function prependRoot(&$file, $index, $root)
+    {
+        $file = $root . DIRECTORY_SEPARATOR . $file;
     }
 }
