@@ -122,7 +122,7 @@ class BaseAction
             sprintf(
                 'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
                 escapeshellarg( $this->getAgainst() ),
-                escapeshellarg( $filter )
+                $filter
             ),
             $files,
             $return
@@ -139,7 +139,7 @@ class BaseAction
         // Filter out empty and NULL values
         $files = array_filter( $files );
 
-        $files = array_walk(
+        array_walk(
             $files,
             [ $this, 'prependRoot' ],
             $this->root
