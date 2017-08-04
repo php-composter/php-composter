@@ -104,7 +104,7 @@ class BaseAction
     }
 
     /**
-     * Get the file sthat have been staged for the current commit.
+     * Get the files that have been staged for the current commit.
      *
      * @since 0.1.3
      *
