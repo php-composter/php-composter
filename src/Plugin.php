@@ -197,6 +197,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             'bootstrap.php',
         );
 
+        $filesystem->ensureDirectoryExists($rootTemplate);
+
         foreach ($files as $file) {
             if (static::$io->isVeryVerbose()) {
                 static::$io->write(sprintf(
@@ -221,6 +223,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $hooksPath     = Paths::getPath('root_hooks');
         $gitScriptPath = Paths::getPath('git_script');
+
+        $filesystem->ensureDirectoryExists($hooksPath);
 
         foreach ($this->getGitHookNames() as $githook) {
             $hookPath = $hooksPath . $githook;
