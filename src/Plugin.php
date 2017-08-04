@@ -85,7 +85,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $output .= PHP_EOL;
         $output .= 'return array(' . PHP_EOL;
 
-        foreach (static::getGitHookNames() as $hook) {
+        foreach (Hook::ALL_SUPPORTED as $hook) {
             $entries = HookConfig::getEntries($hook);
             $output .= '    \'' . $hook . '\' => array(' . PHP_EOL;
             foreach ($entries as $priority => $methods) {
@@ -101,33 +101,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $output .= ');' . PHP_EOL;
 
         return $output;
-    }
-
-    /**
-     * Get an array with all known Git hooks.
-     *
-     * @since 0.1.0
-     *
-     * @return array Array of strings.
-     */
-    protected static function getGitHookNames()
-    {
-        return array(
-            'applypatch-msg',
-            'pre-applypatch',
-            'post-applypatch',
-            'pre-commit',
-            'prepare-commit-msg',
-            'commit-msg',
-            'post-commit',
-            'pre-rebase',
-            'post-checkout',
-            'post-merge',
-            'post-update',
-            'pre-auto-gc',
-            'post-rewrite',
-            'pre-push',
-        );
     }
 
     /**
@@ -226,7 +199,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $filesystem->ensureDirectoryExists($hooksPath);
 
-        foreach ($this->getGitHookNames() as $githook) {
+        foreach (Hook::ALL_SUPPORTED as $githook) {
             $hookPath = $hooksPath . $githook;
             if (static::$io->isDebug()) {
                 static::$io->write(sprintf(

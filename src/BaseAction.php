@@ -24,6 +24,10 @@ namespace PHPComposter\PHPComposter;
 class BaseAction
 {
 
+    const LOCALE       = 'en_US.UTF-8';
+    const ENCODING_ENV = 'LC_ALL=' . self::LOCALE;
+    const GIT_BINARY   = 'git';
+
     /**
      * Root folder of the package.
      *
@@ -54,6 +58,7 @@ class BaseAction
     {
         $this->root = $root;
         $this->hook = $hook;
+        setlocale(LC_CTYPE, static::LOCALE);
     }
 
     /**
@@ -91,7 +96,6 @@ class BaseAction
         $files = glob($pattern, $flags);
 
         foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
-
             // Avoid scanning vendor folder.
             if ($dir === $this->root . '/vendor') {
                 continue;
@@ -106,36 +110,38 @@ class BaseAction
     /**
      * Get the files that have been staged for the current commit.
      *
+     * If the `$mirrorChanges` is set to `true`, the method will create a mirror of the staged changes in a temporary
+     * folder, and return paths pointing to this temporary folder. Otherwise, file-based tools will run against the
+     * current working tree, not the changes that are actually staged.
+     *
      * @since 0.1.3
      *
-     * @var string $pattern Grep pattern to filter the staged files against.
+     * @var string $pattern             Optional. Grep pattern to filter the staged files against.
+     * @var bool   $mirrorStagedChanges Optional. Whether to create a file-based mirror of the staged changes.
+     *                                  Defaults to `true`.
      * @return array
      * @throws \RuntimeException
      */
-    protected function getStagedFiles($pattern)
+    protected function getStagedFiles($pattern = '', $mirrorStagedChanges = true)
     {
         $filter = empty($pattern)
             ? ''
             : " | grep {$pattern}";
 
-        $command = sprintf(
-            'LC_ALL=en_US.UTF-8 git diff-index --name-only --diff-filter=ACMR %s %s',
-            escapeshellarg($this->getAgainst()),
-            $filter
-        );
+        $command = $this->gitCall('diff-index --name-only --diff-filter=ACMR', $this->getAgainst(), $filter);
 
         exec($command, $files, $return);
 
-        if (2 === $return) {
+        if (Git::DIFF_INDEX_ERROR === $return) {
             throw new \RuntimeException('Fetching staged files returns an error');
         }
 
-        // No files found
-        if (1 === $return) {
+        // No files found.
+        if (Git::DIFF_INDEX_NO_FILES_FOUND === $return) {
             return [];
         }
 
-        // Filter out empty and NULL values
+        // Filter out empty and NULL values.
         $files = array_filter($files);
 
         array_walk(
@@ -150,32 +156,54 @@ class BaseAction
     /**
      * Get the tree object to check against.
      *
-     * @return string HEAD or hash representing empty/initial commit state
+     * @return string HEAD or hash representing empty/initial commit state.
      * @throws \RuntimeException
      */
     protected function getAgainst()
     {
-        exec(
-            'LC_ALL=en_US.UTF-8 git rev-parse --verify --quiet HEAD',
-            $output,
-            $return
-        );
+        $command = $this->gitCall('rev-parse --verify --quiet', Git::HEAD);
 
-        if (2 === $return) {
+        exec($command, $output, $return);
+
+        if (Git::UNEXPECTED_ERROR === $return) {
+            throw new \RuntimeException('This is not a valid git repository');
+        }
+
+        if (Git::REV_PARSE_ERROR === $return) {
             throw new \RuntimeException('Finding the HEAD commit hash returned an error');
         }
 
-        // Check if we're on a semi-secret empty tree
+        // Check if we're on a semi-secret empty tree.
         if ($output) {
-            return 'HEAD';
+            return Git::HEAD;
         }
 
-        // Initial commit: diff against an empty tree object
-        return '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+        // Initial commit: diff against an empty tree object.
+        return Git::EMPTY_TREE_OBJECT_HASH;
     }
 
     /**
-     * Prepend the repository root path
+     * Return an escaped call to git based on an arbitrary number of arguments.
+     *
+     * @since 0.3.0
+     *
+     * @param array <string> ...$args Array of arguments to escape.
+     *
+     * @return string Escaped call to git.
+     */
+    protected function gitCall(...$args)
+    {
+        return sprintf(
+            '%s %s %s %s',
+            static::ENCODING_ENV,
+            static::GIT_BINARY,
+            "--git-dir={$this->root}/.git --work-tree={$this->root}",
+            implode(' ', $args)
+        );
+    }
+
+    /**
+     * Prepend the repository root path.
      *
      * @param string $file File name by reference
      * @param int    $index
