@@ -28,13 +28,30 @@ use PHPComposter\Tests\TestProxyAction;
 class BaseActionTest extends TestCase
 {
 
+    /**
+     * Path to fixtures.
+     *
+     * @var string
+     *
+     * @since 0.3.0
+     */
     private $fixtures;
 
+    /**
+     * Set up the tests.
+     *
+     * @since 0.3.0
+     */
     public function setUp()
     {
         $this->fixtures = dirname(dirname(__DIR__)) . '/fixtures';
     }
 
+    /**
+     * Tear down the tests.
+     *
+     * @since 0.3.0
+     */
     public function tearDown()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
@@ -42,12 +59,22 @@ class BaseActionTest extends TestCase
         exec(BaseAction::ENCODING_ENV . " rm -f {$folder}/test.txt");
     }
 
+    /**
+     * Test whether the BaseAction class can be instantiated on its own.
+     *
+     * @since 0.3.0
+     */
     public function testBaseClassCanBeInstantiated()
     {
         $object = new BaseAction(Hook::PRE_COMMIT, $this->fixtures);
         $this->assertInstanceOf(BaseAction::class, $object);
     }
 
+    /**
+     * Test whether the recursive globbing through file/folder hierarchies works as expected.
+     *
+     * @since 0.3.0
+     */
     public function testRecursiveGlobWorksAsExpected()
     {
         $action = new TestProxyAction(Hook::PRE_COMMIT, $this->fixtures);
@@ -59,6 +86,11 @@ class BaseActionTest extends TestCase
         ], $files);
     }
 
+    /**
+     * Test whether the `gitCall()` method produces valid git commands.
+     *
+     * @since 0.3.0
+     */
     public function testGitCallProducesValidOutput()
     {
         $folder  = escapeshellarg($this->fixtures);
@@ -71,6 +103,11 @@ class BaseActionTest extends TestCase
         );
     }
 
+    /**
+     * Test whether the `getAgainst()` method throws an exception on a non-git folder.
+     *
+     * @since 0.3.0
+     */
     public function testGetAgainstThrowsExceptionOnNonGitFolder()
     {
         $action = new TestProxyAction(Hook::PRE_COMMIT, $this->fixtures);
@@ -78,6 +115,11 @@ class BaseActionTest extends TestCase
         $action->callMethod('getAgainst');
     }
 
+    /**
+     * Test whether the `getAgainst()` method returns the "empty tree object hash" on an empty git repository.
+     *
+     * @since 0.3.0
+     */
     public function testGetAgainstReturnsEmptyTreeObjectHashOnEmptyGitRepo()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
@@ -88,6 +130,11 @@ class BaseActionTest extends TestCase
         $this->assertEquals(Git::EMPTY_TREE_OBJECT_HASH, $against);
     }
 
+    /**
+     * Test whether the `getAgainst()` method returns the "HEAD reference" on an normal git repository.
+     *
+     * @since 0.3.0
+     */
     public function testGetAgainstReturnsHeadOnLatestCommit()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
@@ -100,6 +147,11 @@ class BaseActionTest extends TestCase
         $this->assertEquals(Git::HEAD, $against);
     }
 
+    /**
+     * Test whether we can fetch the list of staged files that point to the current working tree.
+     *
+     * @since 0.3.0
+     */
     public function testGetStagedFilesCanReturnTheWorkingTree()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
@@ -117,6 +169,12 @@ class BaseActionTest extends TestCase
         $this->assertStringEqualsFile($file, 'working' . PHP_EOL);
     }
 
+    /**
+     * Test whether we can fetch the list of staged files that point to a temporary mirror containing the staged
+     * content changes.
+     *
+     * @since 0.3.0
+     */
     public function testGetStagedFilesCanReturnTheStagedChanges()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
