@@ -87,7 +87,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         foreach (Hook::ALL_SUPPORTED as $hook) {
             $entries = HookConfig::getEntries($hook);
-            $output .= '    \'' . $hook . '\' => array(' . PHP_EOL;
+            $output  .= '    \'' . $hook . '\' => array(' . PHP_EOL;
             foreach ($entries as $priority => $methods) {
                 $output .= '        ' . $priority . ' => array(' . PHP_EOL;
                 foreach ($methods as $method) {
@@ -115,7 +115,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         static::$io = $io;
         if (static::$io->isVerbose()) {
-            static::$io->write(_('Activating PHP Composter plugin'), true);
+            static::$io->write('Activating PHP Composter plugin', true);
         }
         $installer = new Installer(static::$io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
@@ -138,7 +138,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $composterPath = Paths::getPath('git_composter');
         if (static::$io->isVeryVerbose()) {
             static::$io->write(sprintf(
-                _('Removing previous PHP Composter actions at %1$s'),
+                'Removing previous PHP Composter actions at %1$s',
                 $composterPath
             ), true);
         }
@@ -147,7 +147,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $composterTemplate = Paths::getPath('root_template');
         if (static::$io->isVeryVerbose()) {
             static::$io->write(sprintf(
-                _('Removing previous PHP Composter code at %1$s'),
+                'Removing previous PHP Composter code at %1$s',
                 $composterTemplate
             ), true);
         }
@@ -175,7 +175,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         foreach ($files as $file) {
             if (static::$io->isVeryVerbose()) {
                 static::$io->write(sprintf(
-                    _('Symlinking %1$s to %2$s'),
+                    'Symlinking %1$s to %2$s',
                     $rootTemplate . $file,
                     $composterTemplate . $file
                 ));
@@ -203,7 +203,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
             $hookPath = $hooksPath . $githook;
             if (static::$io->isDebug()) {
                 static::$io->write(sprintf(
-                    _('Symlinking %1$s to %2$s'),
+                    'Symlinking %1$s to %2$s',
                     $hookPath,
                     $gitScriptPath
                 ));

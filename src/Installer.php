@@ -63,7 +63,7 @@ class Installer extends LibraryInstaller
         $path = $this->getInstallPath($package);
         if ($this->io->isVerbose()) {
             $this->io->write(sprintf(
-                _('Symlinking PHP Composter action %1$s'),
+                'Symlinking PHP Composter action %1$s',
                 $path
             ), true);
         }
@@ -81,7 +81,7 @@ class Installer extends LibraryInstaller
 
             if ($this->io->isVeryVerbose()) {
                 $this->io->write(sprintf(
-                    _('Adding method "%1$s" to hook "%2$s" with priority %3$s'),
+                    'Adding method "%1$s" to hook "%2$s" with priority %3$s',
                     $method,
                     $hook,
                     $priority
@@ -138,8 +138,8 @@ class Installer extends LibraryInstaller
         $result = (array)explode('/', $package->getPrettyName());
         if (count($result) !== 2) {
             throw new InvalidArgumentException(sprintf(
-                _('Unable to install PHP Composter action, could '
-                  . 'not extract action name from package "%1$s"'),
+                'Unable to install PHP Composter action, could '
+                . 'not extract action name from package "%1$s"',
                 $package->getPrettyName()
             ));
         }
@@ -150,9 +150,9 @@ class Installer extends LibraryInstaller
 
         if (self::PREFIX !== $prefix) {
             throw new InvalidArgumentException(sprintf(
-                _('Unable to install PHP Composter action, actions '
-                  . 'should always start their package name with '
-                  . '"<vendor>/%1$s"'),
+                'Unable to install PHP Composter action, actions '
+                . 'should always start their package name with '
+                . '"<vendor>/%1$s"',
                 self::PREFIX
             ));
         }
@@ -172,7 +172,7 @@ class Installer extends LibraryInstaller
     protected function getHooks(PackageInterface $package)
     {
         $extra = $package->getExtra();
-        if ( ! array_key_exists(self::EXTRA_KEY, $extra)) {
+        if (!array_key_exists(self::EXTRA_KEY, $extra)) {
             return array();
         }
 

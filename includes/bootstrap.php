@@ -40,7 +40,7 @@ if (array_key_exists($hook, $config)) {
             if (count($array) !== 2) {
                 throw new RuntimeException(
                     sprintf(
-                        _('Configuration error in PHP Composter data, could not parse method "%1$s"'),
+                        'Configuration error in PHP Composter data, could not parse method "%1$s"',
                         $call
                     )
                 );
