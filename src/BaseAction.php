@@ -11,6 +11,8 @@
 
 namespace PHPComposter\PHPComposter;
 
+use Composer\Util\Filesystem;
+
 /**
  * Abstract Class BaseAction.
  *
@@ -36,6 +38,15 @@ class BaseAction
      * @since 0.1.3
      */
     protected $root;
+
+    /**
+     * Mirror folder of the package.
+     *
+     * @var string
+     *
+     * @since 0.3.0
+     */
+    protected $mirror;
 
     /**
      * Hook that was triggered.
@@ -79,6 +90,19 @@ class BaseAction
     public function shutdown()
     {
         // Do nothing. Can be overridden by extending classes.
+    }
+
+    /**
+     * Destroy the BaseAction object again.
+     *
+     * @since 0.3.0
+     */
+    public function __destruct()
+    {
+        if (!empty($this->mirror)) {
+            $filesystem = new Filesystem();
+            $filesystem->removeDirectory($this->mirror);
+        }
     }
 
     /**
@@ -128,10 +152,12 @@ class BaseAction
             ? ''
             : " | grep {$pattern}";
 
-        $command = $this->gitCall('diff-index --name-only --diff-filter=ACMR', $this->getAgainst(), $filter);
+        // Get the list of file names that are staged.
+        $diffCommand = $this->gitCall('diff-index --name-only --diff-filter=ACMR', $this->getAgainst(), $filter);
 
-        exec($command, $files, $return);
+        exec($diffCommand, $files, $return);
 
+        // Unknown problem while fetching the index.
         if (Git::DIFF_INDEX_ERROR === $return) {
             throw new \RuntimeException('Fetching staged files returns an error');
         }
@@ -144,11 +170,27 @@ class BaseAction
         // Filter out empty and NULL values.
         $files = array_filter($files);
 
-        array_walk(
-            $files,
-            [$this, 'prependRoot'],
-            $this->root
-        );
+        // Check if we want to compare against the actual staged content changes (instead of only the file names).
+        if ($mirrorStagedChanges) {
+            $this->mirror = "{$this->root}/.git/staged";
+            $filesystem   = new Filesystem();
+            $filesystem->emptyDirectory($this->mirror);
+
+            // Checkout the current index with a folder prefix.
+            $checkoutCommand = $this->gitCall(
+                'checkout-index',
+                '--prefix=' . escapeshellarg("{$this->mirror}/"),
+                '-af'
+            );
+
+            exec($checkoutCommand, $output, $return);
+
+            // Detect content differences, and replace the file from the temporary mirror as needed.
+            array_walk($files, [$this, 'detectStagedChanges'], [$this->root, $this->mirror]);
+        } else {
+            // No staged content changes needed, just return the name of the staged files.
+            array_walk($files, [$this, 'prependRoot'], $this->root);
+        }
 
         return $files;
     }
@@ -205,12 +247,75 @@ class BaseAction
     /**
      * Prepend the repository root path.
      *
-     * @param string $file File name by reference
-     * @param int    $index
-     * @param string $root
+     * @param string $file  File name by reference
+     * @param int    $index Index into the array.
+     * @param string $root  Root folder.
      */
-    private function prependRoot(&$file, $index, $root)
+    protected function prependRoot(&$file, $index, $root)
     {
-        $file = $root . DIRECTORY_SEPARATOR . $file;
+        $file = "{$root}/{$file}";
     }
+
+    /**
+     * Prepend the repository root path.
+     *
+     * @param string $file    File name by reference
+     * @param int    $index   Index into the array.
+     * @param array  $folders Root and mirror folder paths.
+     */
+    protected function detectStagedChanges(&$file, $index, $folders)
+    {
+        list($root, $mirror) = $folders;
+
+        if ($this->filesEqual("{$root}/{$file}", "{$mirror}/{$file}")) {
+            $file = "{$root}/{$file}";
+
+            return;
+        }
+
+        $file = "{$mirror}/{$file}";
+    }
+
+    /**
+     * Compare two files to see whether they are equal.
+     *
+     * Does incremental comparison to avoid loading big files entirely if not needed.
+     *
+     * @since 0.3.0
+     *
+     * @param string $fileA Path to the first file to compare.
+     * @param string $fileB Path to the second file to compare.
+     *
+     * @return bool Whether the two files were equal.
+     */
+    protected function filesEqual($fileA, $fileB)
+    {
+        if (!is_file($fileA) || !is_file($fileB)) {
+            return false;
+        }
+
+        if (!is_readable($fileA) || !is_readable($fileB)) {
+            return false;
+        }
+
+        if (filesize($fileA) !== filesize($fileB)) {
+            return false;
+        }
+
+        $fileResourceA = fopen($fileA, 'rb');
+        $fileResourceB = fopen($fileB, 'rb');
+
+        $equal = true;
+
+        while ($equal && ($bufferA = fread($fileResourceA, 4096)) !== false) {
+            $bufferB = fread($fileResourceB, 4096);
+            $equal   = $bufferA !== $bufferB;
+        }
+
+        fclose($fileResourceA);
+        fclose($fileResourceB);
+
+        return $equal;
+    }
+
 }
