@@ -9,7 +9,9 @@
  * @copyright 2016 Alain Schlesser, Bright Nucleus
  */
 
-use PHPComposter\PHPComposter\Paths;
+namespace PHPComposter\PHPComposter;
+
+use RuntimeException;
 
 // Get the command-line arguments passed from the shell script.
 global $argv;
@@ -29,9 +31,6 @@ if (array_key_exists($hook, $config)) {
 
     $actions = $config[$hook];
 
-    // Sort by priority.
-    ksort($actions);
-
     // Launch each method.
     foreach ($actions as $calls) {
         foreach ($calls as $call) {
@@ -49,6 +48,7 @@ if (array_key_exists($hook, $config)) {
             list($class, $method) = $array;
 
             // Instantiate a new action object and call its method.
+            /** @var BaseAction $object */
             $object = new $class($hook, $root);
             $object->init();
             $object->$method();
