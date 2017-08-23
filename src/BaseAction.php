@@ -194,6 +194,18 @@ class BaseAction
     }
 
     /**
+     * Skip the current action but continue execution for other actions.
+     *
+     * @since 0.3.0
+     *
+     * @param string $reason Reason why the current action was skipped.
+     */
+    protected function skip($reason)
+    {
+        $this->io->write('Skipping the current action: ' . $reason);
+    }
+
+    /**
      * Recursively iterate over folders and look for $pattern.
      *
      * @since 0.1.3
