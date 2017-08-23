@@ -153,6 +153,18 @@ class BaseAction
     }
 
     /**
+     * Write a message to the console.
+     *
+     * @since 0.3.0
+     *
+     * @param string $message Message to write to the console.
+     */
+    protected function write($message)
+    {
+        $this->io->write($message);
+    }
+
+    /**
      * Display the title of the action.
      *
      * @since 0.3.0
@@ -174,7 +186,7 @@ class BaseAction
      */
     protected function error($message, $exitCode)
     {
-        $this->io->writeError($message);
+        $this->io->writeError("<error>Error:</error> $message");
         false === $exitCode || exit($exitCode);
     }
 
@@ -189,7 +201,7 @@ class BaseAction
      */
     protected function success($message, $exitCode = 0)
     {
-        $this->io->write($message);
+        $this->io->write("<info>Success:</info> $message <info>✔</info>");
         false === $exitCode || exit($exitCode);
     }
 
@@ -198,11 +210,14 @@ class BaseAction
      *
      * @since 0.3.0
      *
-     * @param string $reason Reason why the current action was skipped.
+     * @param string    $reason   Reason why the current action was skipped.
+     * @param int|false $exitCode Optional. Integer exit code, or false if execution should not be halted.
+     *                            Defaults to 0.
      */
-    protected function skip($reason)
+    protected function skip($reason, $exitCode = 0)
     {
-        $this->io->write('Skipping the current action: ' . $reason);
+        $this->io->write("<comment>Skipping the current action:</comment> $reason");
+        false === $exitCode || exit($exitCode);
     }
 
     /**
