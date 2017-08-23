@@ -11,7 +11,10 @@
 
 namespace PHPComposter\PHPComposter;
 
+use Composer\IO\ConsoleIO;
+use Composer\IO\IOInterface;
 use Composer\Util\Filesystem;
+use Symfony\Component\Console;
 
 /**
  * Abstract Class BaseAction.
@@ -58,18 +61,62 @@ class BaseAction
     protected $hook;
 
     /**
+     * Input/output interface.
+     *
+     * @var IOInterface
+     *
+     * @since 0.3.0
+     */
+    protected $io;
+
+    /**
      * Instantiate a BaseAction object.
      *
      * @since 0.1.3
      *
-     * @param string $hook The name of the hook that was triggered.
-     * @param string $root Absolute path to the root folder of the package.
+     * @param string      $hook The name of the hook that was triggered.
+     * @param string      $root Absolute path to the root folder of the package.
+     * @param IOInterface $io   Optional. Input/Output interface implementation.
      */
-    public function __construct($hook, $root)
+    public function __construct($hook, $root, IOInterface $io = null)
     {
         $this->root = $root;
         $this->hook = $hook;
         setlocale(LC_CTYPE, static::LOCALE);
+        $this->io = $io ?: $this->getDefaultConsoleIO();
+    }
+
+    /**
+     * Get the default console input/output implementation.
+     *
+     * @since 0.1.3
+     *
+     * @return IOInterface A HelperSet instance
+     */
+    protected function getDefaultConsoleIO()
+    {
+        return new ConsoleIO(
+            new Console\Input\ArgvInput(),
+            new Console\Output\ConsoleOutput(),
+            $this->getDefaultHelperSet()
+        );
+    }
+
+    /**
+     * Get the default helper set with the helpers that should always be available.
+     *
+     * @since 0.1.3
+     *
+     * @return Console\Helper\HelperSet A HelperSet instance
+     */
+    protected function getDefaultHelperSet()
+    {
+        return new Console\Helper\HelperSet(array(
+            new Console\Helper\FormatterHelper(),
+            new Console\Helper\DebugFormatterHelper(),
+            new Console\Helper\ProcessHelper(),
+            new Console\Helper\QuestionHelper(),
+        ));
     }
 
     /**
@@ -103,6 +150,20 @@ class BaseAction
             $filesystem = new Filesystem();
             $filesystem->removeDirectory($this->mirror);
         }
+    }
+
+    /**
+     * Generate an error message and optionally halt further execution.
+     *
+     * @since 0.3.0
+     *
+     * @param string    $message  Error message to render.
+     * @param int|false $exitCode Integer exit code, or false if execution should not be halted.
+     */
+    protected function error($message, $exitCode)
+    {
+        $this->io->writeError($message);
+        false === $exitCode || exit($exitCode);
     }
 
     /**
