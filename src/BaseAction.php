@@ -153,6 +153,18 @@ class BaseAction
     }
 
     /**
+     * Display the title of the action.
+     *
+     * @since 0.3.0
+     *
+     * @param string $title Title of the action.
+     */
+    protected function title($title)
+    {
+        $this->io->write($title);
+    }
+
+    /**
      * Generate an error message and optionally halt further execution.
      *
      * @since 0.3.0
