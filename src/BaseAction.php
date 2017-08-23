@@ -167,6 +167,21 @@ class BaseAction
     }
 
     /**
+     * Generate a success message and optionally halt further execution.
+     *
+     * @since 0.3.0
+     *
+     * @param string    $message  Success message to render.
+     * @param int|false $exitCode Optional. Integer exit code, or false if execution should not be halted.
+     *                            Defaults to 0.
+     */
+    protected function success($message, $exitCode = 0)
+    {
+        $this->io->write($message);
+        false === $exitCode || exit($exitCode);
+    }
+
+    /**
      * Recursively iterate over folders and look for $pattern.
      *
      * @since 0.1.3
@@ -378,5 +393,4 @@ class BaseAction
 
         return $equal;
     }
-
 }
