@@ -221,6 +221,56 @@ class BaseAction
     }
 
     /**
+     * Get the value for a specific "extra" config key.
+     *
+     * @since 0.3.0
+     *
+     * @param string $key      Key to retrieve.
+     * @param mixed  $fallback Optional. Fallback value to use if the key is not found.
+     *
+     * @return mixed
+     */
+    protected function getExtraKey($key, $fallback = null)
+    {
+        $config = $this->getConfigArray();
+        $extra  = array_key_exists('extra', $config)
+            ? $config['extra']
+            : [];
+
+        return array_key_exists($key, $extra)
+            ? $extra[$key]
+            : $fallback;
+    }
+
+    /**
+     * Get the Composer configuration.
+     *
+     * @since 0.3.0
+     *
+     * @return array
+     */
+    protected function getConfigArray()
+    {
+        static $config = null;
+
+        if (null === $config) {
+            $config = [];
+            if (!is_readable(Paths::getPath('composer_config'))) {
+                return $config;
+            }
+
+            $composerFile = file_get_contents(Paths::getPath('composer_config'));
+            if (false === $composerFile) {
+                return $config;
+            }
+
+            $config = json_decode($composerFile, true);
+        }
+
+        return $config;
+    }
+
+    /**
      * Recursively iterate over folders and look for $pattern.
      *
      * @since 0.1.3
