@@ -33,6 +33,8 @@ class Paths
     const GIT_FOLDER          = '.git/';
     const GIT_TEMPLATE_FOLDER = 'includes/';
     const HOOKS_FOLDER        = 'hooks/';
+    const COMPOSER_CONFIG     = 'composer.json';
+
     /**
      * Internal storage of all required paths.
      *
@@ -81,6 +83,6 @@ class Paths
         static::$paths['git_template']     = static::$paths['vendor_composter'] . self::GIT_TEMPLATE_FOLDER;
         static::$paths['root_template']    = static::$paths['git_composter'] . self::GIT_TEMPLATE_FOLDER;
         static::$paths['git_config']       = static::$paths['git_composter'] . self::CONFIG;
+        static::$paths['composer_config']  = static::$paths['pwd'] . self::COMPOSER_CONFIG;
     }
-
 }
