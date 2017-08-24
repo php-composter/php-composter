@@ -15,8 +15,10 @@ use RuntimeException;
 
 // Get the command-line arguments passed from the shell script.
 global $argv;
-$hook = $argv[1];
-$root = $argv[2];
+$arguments     = $argv;
+$bootstrapPath = array_shift($arguments);
+$hook          = array_shift($arguments);
+$root          = array_shift($arguments);
 
 // Initialize Composer Autoloader.
 if (file_exists($root . '/vendor/autoload.php')) {
@@ -51,7 +53,7 @@ if (array_key_exists($hook, $config)) {
             /** @var BaseAction $object */
             $object = new $class($hook, $root);
             $object->init();
-            $object->$method();
+            $object->$method(...$arguments);
             $object->shutdown();
             unset($object);
         }
