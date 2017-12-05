@@ -30,7 +30,7 @@ You should not need to install this package directly. It should come as a depend
 
     > Check your PHP source code for PSR-2 compliance before committing.
 
-* **[PHP Composter Commit Regex](https://github.com/php-composter/php-composter-regular-expression)**
+* **[PHP Composter Regular Expression](https://github.com/php-composter/php-composter-regular-expression)**
 
     > Check your commit messages against a regular expression pattern, to enforce a commit message standard.
 
