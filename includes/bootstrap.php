@@ -21,8 +21,8 @@ $hook          = array_shift($arguments);
 $root          = array_shift($arguments);
 
 // Initialize Composer Autoloader.
-if (file_exists($root . '/vendor/autoload.php')) {
-    require_once $root . '/vendor/autoload.php';
+if (file_exists($root . '/autoload.php')) {
+    require_once $root . '/autoload.php';
 }
 
 // Read the configuration file.
