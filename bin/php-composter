@@ -22,10 +22,10 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Verify that the bootstrap.php file exists.
-if [[ ! -f $package_root/.git/php-composter/includes/bootstrap.php ]]; then
+if [[ ! -f "$package_root/.git/php-composter/includes/bootstrap.php" ]]; then
     printf "PHP Composter bootstrap file was not found. Please reinstall.\n"
     exit
 fi
 
 # Launch the engine.
-$php $package_root/.git/php-composter/includes/bootstrap.php $hook $package_root ${@:1}
+$php "$package_root/.git/php-composter/includes/bootstrap.php" $hook "$package_root" ${@:1}
