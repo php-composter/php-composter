@@ -34,9 +34,10 @@ You should not need to install this package directly. It should come as a depend
 
     > Check your commit messages against a regular expression pattern, to enforce a commit message standard.
 
-* **PHP Composter PHPCS WordPress** _(coming soon)_
+* **[PHP Composter PHPCS WordPress](https://github.com/php-composter/php-composter-phpcs-wpcs)**
 
     > Check your PHP source code for WordPress Coding Standards compliance before committing.
+    > Thanks to [Gabor Javorszky](https://github.com/javorszky) for contributing this action.
 
 * **PHP Composter PHPUnit** _(coming soon)_
 
