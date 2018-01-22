@@ -37,6 +37,7 @@ You should not need to install this package directly. It should come as a depend
 * **[PHP Composter PHPCS WordPress](https://github.com/php-composter/php-composter-phpcs-wpcs)**
 
     > Check your PHP source code for WordPress Coding Standards compliance before committing.
+    >
     > Thanks to [Gabor Javorszky](https://github.com/javorszky) for contributing this action.
 
 * **PHP Composter PHPUnit** _(coming soon)_
