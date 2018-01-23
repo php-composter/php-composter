@@ -66,7 +66,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $filesystem = new Filesystem();
         $path       = Paths::getPath('git_composter');
         $filesystem->ensureDirectoryExists($path);
+
+        // create symlinks for hooks
         file_put_contents(Paths::getPath('git_config'), static::getConfig());
+
+        // save where the vendor dir is
+        file_put_contents(Paths::getPath('env_config'), Paths::getPath('env_path'));
     }
 
     /**

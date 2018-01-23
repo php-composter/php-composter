@@ -29,6 +29,7 @@ class Paths
     const COMPOSTER_FOLDER    = 'php-composter/';
     const COMPOSTER_PATH      = 'php-composter/php-composter/';
     const CONFIG              = 'config.php';
+    const ENV_FILE            = 'env.path';
     const EXECUTABLE          = 'php-composter';
     const GIT_FOLDER          = '.git/';
     const GIT_TEMPLATE_FOLDER = 'includes/';
@@ -77,13 +78,15 @@ class Paths
         static::$paths['composer_config']  = static::$paths['pwd'] . self::COMPOSER_CONFIG;
         static::$paths['root_git']         = static::$paths['pwd'] . self::GIT_FOLDER;
         static::$paths['root_hooks']       = static::$paths['root_git'] . self::HOOKS_FOLDER;
-        static::$paths['vendor_composter'] = static::$paths['pwd'] . self::getConfigKey('vendor-dir', 'vendor' ) . DIRECTORY_SEPARATOR . self::COMPOSTER_PATH;
+        static::$paths['env_path']         = static::$paths['pwd'] . self::getConfigKey('vendor-dir', 'vendor' ) . DIRECTORY_SEPARATOR;
+        static::$paths['vendor_composter'] = static::$paths['env_path'] . DIRECTORY_SEPARATOR . self::COMPOSTER_PATH;
         static::$paths['git_composter']    = static::$paths['root_git'] . self::COMPOSTER_FOLDER;
         static::$paths['git_script']       = static::$paths['vendor_composter'] . self::BIN_FOLDER . self::EXECUTABLE;
         static::$paths['actions']          = static::$paths['git_composter'] . self::ACTIONS_FOLDER;
         static::$paths['git_template']     = static::$paths['vendor_composter'] . self::GIT_TEMPLATE_FOLDER;
         static::$paths['root_template']    = static::$paths['git_composter'] . self::GIT_TEMPLATE_FOLDER;
         static::$paths['git_config']       = static::$paths['git_composter'] . self::CONFIG;
+        static::$paths['env_config']       = static::$paths['git_composter'] . self::ENV_FILE;
     }
 
     /**

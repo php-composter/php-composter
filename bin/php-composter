@@ -27,9 +27,10 @@ if [[ ! -f $package_root/.git/php-composter/includes/bootstrap.php ]]; then
     exit
 fi
 
-vendor_dir=`composer config vendor-dir --absolute 2> /dev/null`
-if [[ $? -ne 0 ]]; then
-    vendor_dir="$package_root/vendor"
+# Let's see if we have a config file with vendor dir
+vendor_dir="$package_root/vendor"
+if [[ -f $package_root/.git/php-composter/env.path ]]; then
+    vendor_dir=`cat $package_root/.git/php-composter/env.path`
 fi
 
 # Launch the engine.
