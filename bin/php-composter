@@ -28,4 +28,4 @@ if [[ ! -f "$package_root/.git/php-composter/includes/bootstrap.php" ]]; then
 fi
 
 # Launch the engine.
-$php "$package_root/.git/php-composter/includes/bootstrap.php" $hook "$package_root" ${@:1}
+$php "$package_root/.git/php-composter/includes/bootstrap.php" $hook "$package_root" ${@:1} < /dev/tty
