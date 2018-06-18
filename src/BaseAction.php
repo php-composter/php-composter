@@ -318,7 +318,7 @@ class BaseAction
             : " | grep {$pattern}";
 
         // Get the list of file names that are staged.
-        $diffCommand = $this->gitCall('diff-index --name-only --diff-filter=ACMR', $this->getAgainst(), $filter);
+        $diffCommand = $this->gitCall('diff --staged --name-only --diff-filter=ACMR', $this->getAgainst(), $filter);
 
         exec($diffCommand, $files, $return);
 
