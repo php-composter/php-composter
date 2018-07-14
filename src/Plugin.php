@@ -236,19 +236,28 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                 symlink($filesystem->normalizePath($target), $filesystem->normalizePath($link));
             } catch (\ErrorException $e) {
                 // Generate a more explanatory exception instead of the standard symlink messages.
-                $explanatoryException = new \RuntimeException(sprintf('%3$s: Failed to create absolute symlink %1$s to %2$s',
-                    $filesystem->normalizePath($link), $filesystem->normalizePath($target), static::PACKAGE_NAME), 0, $e);
+                $explanatoryException = new \RuntimeException(sprintf(
+                    '%3$s: Failed to create absolute symlink %1$s to %2$s',
+                    $filesystem->normalizePath($link),
+                    $filesystem->normalizePath($target),
+                    static::PACKAGE_NAME
+                ), 0, $e);
 
                 // If we are on windows and the code of the ErrorException is 1314, you do not have sufficient privilege to perform a symlink.
                 if ($e->getMessage() ===  "symlink(): Cannot create symlink, error code(1314)" && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                     // Inform the user that it is a privilege issue.
-                    throw new \RuntimeException(sprintf('%1$s Failed to create symbolic link: ' .
+                    throw new \RuntimeException(sprintf(
+                        '%1$s Failed to create symbolic link: ' .
                         "You do not have sufficient privilege to perform this operation. Please run this command as administrator.",
-                        static::PACKAGE_NAME), 0, $explanatoryException);
+                        static::PACKAGE_NAME
+                    ), 0, $explanatoryException);
                 } elseif (file_exists($link)) {
                     // File already exists, issue a warning.
-                    static::$io->write(sprintf('%1$s: Cannot create symlink at %2$s. File already exists.', static::PACKAGE_NAME,
-                        $filesystem->normalizePath($link)));
+                    static::$io->isVeryVerbose() && static::$io->write(sprintf(
+                        '%1$s: Cannot create symlink at %2$s. File already exists.',
+                        static::PACKAGE_NAME,
+                        $filesystem->normalizePath($link)
+                    ));
                 } else {
                     throw $explanatoryException;
                 }
