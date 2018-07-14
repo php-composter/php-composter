@@ -148,16 +148,11 @@ class Installer extends LibraryInstaller
         $prefixLength = mb_strlen(self::PREFIX);
         $prefix       = mb_substr($name, 0, $prefixLength);
 
-        if (self::PREFIX !== $prefix) {
-            throw new InvalidArgumentException(sprintf(
-                'Unable to install PHP Composter action, actions '
-                . 'should always start their package name with '
-                . '"<vendor>/%1$s"',
-                self::PREFIX
-            ));
+        if (self::PREFIX === $prefix) {
+            return mb_substr($name, $prefixLength);
         }
 
-        return mb_substr($name, $prefixLength);
+        return $name;
     }
 
     /**
