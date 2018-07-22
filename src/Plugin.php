@@ -31,6 +31,7 @@ use Composer\Util\Filesystem;
  */
 class Plugin implements PluginInterface, EventSubscriberInterface
 {
+
     /**
      * The name of the current package.
      * Used in error output.
@@ -55,10 +56,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             ScriptEvents::POST_INSTALL_CMD => 'persistConfig',
             ScriptEvents::POST_UPDATE_CMD  => 'persistConfig',
-        );
+        ];
     }
 
     /**
@@ -92,7 +93,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $output .= PHP_EOL;
         $output .= 'return array(' . PHP_EOL;
 
-        foreach (Hook::ALL_SUPPORTED as $hook) {
+        foreach (Hook::getSupportedHooks() as $hook) {
             $entries = HookConfig::getEntries($hook);
             $output  .= '    \'' . $hook . '\' => array(' . PHP_EOL;
             foreach ($entries as $priority => $methods) {
@@ -173,9 +174,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $rootTemplate      = Paths::getPath('root_template');
         $composterTemplate = Paths::getPath('git_template');
 
-        $files = array(
+        $files = [
             'bootstrap.php',
-        );
+        ];
 
         $filesystem->ensureDirectoryExists($rootTemplate);
 
@@ -187,7 +188,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                     $composterTemplate . $file
                 ));
             }
-            $this->createRelativeSymlink($filesystem,$composterTemplate . $file, $rootTemplate . $file);
+            $this->createRelativeSymlink($filesystem, $composterTemplate . $file, $rootTemplate . $file);
         }
     }
 
@@ -206,7 +207,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         $filesystem->ensureDirectoryExists($hooksPath);
 
-        foreach (Hook::ALL_SUPPORTED as $githook) {
+        foreach (Hook::getSupportedHooks() as $githook) {
             $hookPath = $hooksPath . $githook;
             if (static::$io->isDebug()) {
                 static::$io->write(sprintf(
@@ -225,12 +226,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * @throws \RuntimeException When also the absolute symlink creation fails.
      *
      * @param Filesystem $filesystem
-     * @param $target
-     * @param $link
+     * @param            $target
+     * @param            $link
      */
-    protected function createRelativeSymlink(Filesystem $filesystem, $target, $link) {
+    protected function createRelativeSymlink(Filesystem $filesystem, $target, $link)
+    {
         if (!$filesystem->relativeSymlink($target, $link)) {
-            static::$io->write('Unable to create relative symlink, try absolute symlink.', true, IOInterface::VERBOSE);
+            static::$io->write(
+                'Unable to create relative symlink, try absolute symlink.',
+                true,
+                IOInterface::VERBOSE
+            );
 
             try {
                 symlink($filesystem->normalizePath($target), $filesystem->normalizePath($link));
@@ -243,12 +249,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface
                     static::PACKAGE_NAME
                 ), 0, $e);
 
-                // If we are on windows and the code of the ErrorException is 1314, you do not have sufficient privilege to perform a symlink.
-                if ($e->getMessage() ===  "symlink(): Cannot create symlink, error code(1314)" && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                // If we are on windows and the code of the ErrorException is 1314, you do not have sufficient privilege
+                // to perform a symlink.
+                if ($e->getMessage() === 'symlink(): Cannot create symlink, error code(1314)'
+                    && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                     // Inform the user that it is a privilege issue.
                     throw new \RuntimeException(sprintf(
                         '%1$s Failed to create symbolic link: ' .
-                        "You do not have sufficient privilege to perform this operation. Please run this command as administrator.",
+                        'You do not have sufficient privilege to perform this operation. ' .
+                        'Please run this command as administrator.',
                         static::PACKAGE_NAME
                     ), 0, $explanatoryException);
                 } elseif (file_exists($link)) {

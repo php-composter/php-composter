@@ -12,14 +12,15 @@
 namespace PHPComposter\PHPComposter;
 
 /**
- * Interface Hook.
+ * Class Hook.
  *
  * @since   0.3.0
+ * @since   0.3.2 Turned into class to change const array into method.
  *
  * @package PHPComposter\PHPComposter
  * @author  Alain Schlesser <alain.schlesser@gmail.com>
  */
-interface Hook
+final class Hook
 {
 
     const APPLYPATCH_MSG     = 'applypatch-msg';
@@ -37,21 +38,30 @@ interface Hook
     const POST_REWRITE       = 'post-rewrite';
     const PRE_PUSH           = 'pre-push';
 
-    // Array of all hooks supported by PHP-Composter.
-    const ALL_SUPPORTED = [
-        self::APPLYPATCH_MSG,
-        self::PRE_APPLYPATCH,
-        self::POST_APPLYPATCH,
-        self::PRE_COMMIT,
-        self::PREPARE_COMMIT_MSG,
-        self::COMMIT_MSG,
-        self::POST_COMMIT,
-        self::PRE_REBASE,
-        self::POST_CHECKOUT,
-        self::POST_MERGE,
-        self::POST_UPDATE,
-        self::PRE_AUTO_GC,
-        self::POST_REWRITE,
-        self::PRE_PUSH,
-    ];
+    /**
+     * Get the list of supported hooks as an array.
+     *
+     * @since 0.3.2
+     *
+     * @return array<string> Array of hook names.
+     */
+    public static function getSupportedHooks()
+    {
+        return [
+            self::APPLYPATCH_MSG,
+            self::PRE_APPLYPATCH,
+            self::POST_APPLYPATCH,
+            self::PRE_COMMIT,
+            self::PREPARE_COMMIT_MSG,
+            self::COMMIT_MSG,
+            self::POST_COMMIT,
+            self::PRE_REBASE,
+            self::POST_CHECKOUT,
+            self::POST_MERGE,
+            self::POST_UPDATE,
+            self::PRE_AUTO_GC,
+            self::POST_REWRITE,
+            self::PRE_PUSH,
+        ];
+    }
 }

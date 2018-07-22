@@ -67,7 +67,7 @@ class BaseActionTest extends TestCase
     public function testBaseClassCanBeInstantiated()
     {
         $object = new BaseAction(Hook::PRE_COMMIT, $this->fixtures);
-        $this->assertInstanceOf(BaseAction::class, $object);
+        $this->assertInstanceOf('PHPComposter\PHPComposter\BaseAction', $object);
     }
 
     /**
@@ -111,7 +111,7 @@ class BaseActionTest extends TestCase
     public function testGetAgainstThrowsExceptionOnNonGitFolder()
     {
         $action = new TestProxyAction(Hook::PRE_COMMIT, $this->fixtures);
-        $this->expectException(\RuntimeException::class);
+        $this->expectException('RuntimeException');
         $action->callMethod('getAgainst');
     }
 

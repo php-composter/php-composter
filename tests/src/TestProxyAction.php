@@ -31,11 +31,13 @@ class TestProxyAction extends BaseAction
      *
      * @since 0.3.0
      *
-     * @param string $method  Method name to call.
-     * @param array  ...$args Array of arguments to use.
+     * @param string $method   Method name to call.
+     * @param array  ...$_args Array of arguments to use.
+     *
+     * @return mixed
      */
-    public function callMethod($method, ...$args)
+    public function callMethod($method)
     {
-        return $this->$method(...$args);
+        return call_user_func_array([$this, $method], array_slice(func_get_args(), 1));
     }
 }

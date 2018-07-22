@@ -42,7 +42,7 @@ class Paths
      *
      * @since 0.1.0
      */
-    protected static $paths = array();
+    protected static $paths = [];
 
     /**
      * Get a specific path by key.

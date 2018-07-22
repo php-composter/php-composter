@@ -53,7 +53,7 @@ if (array_key_exists($hook, $config)) {
             /** @var BaseAction $object */
             $object = new $class($hook, $root);
             $object->init();
-            $object->$method(...$arguments);
+            call_user_func_array([ $object, $method ], $arguments);
             $object->shutdown();
             unset($object);
         }

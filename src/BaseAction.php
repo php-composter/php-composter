@@ -30,7 +30,7 @@ class BaseAction
 {
 
     const LOCALE       = 'en_US.UTF-8';
-    const ENCODING_ENV = 'LC_ALL=' . self::LOCALE;
+    const ENCODING_ENV = 'LC_ALL=en_US.UTF-8';
     const GIT_BINARY   = 'git';
 
     /**
@@ -111,12 +111,12 @@ class BaseAction
      */
     protected function getDefaultHelperSet()
     {
-        return new Console\Helper\HelperSet(array(
+        return new Console\Helper\HelperSet([
             new Console\Helper\FormatterHelper(),
             new Console\Helper\DebugFormatterHelper(),
             new Console\Helper\ProcessHelper(),
             new Console\Helper\QuestionHelper(),
-        ));
+        ]);
     }
 
     /**
@@ -284,7 +284,7 @@ class BaseAction
     {
         $files = glob($pattern, $flags);
 
-        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
+        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR) as $dir) {
             // Avoid scanning vendor folder.
             if ($dir === $this->root . '/vendor') {
                 continue;
@@ -394,18 +394,18 @@ class BaseAction
      *
      * @since 0.3.0
      *
-     * @param array <string> ...$args Array of arguments to escape.
+     * @param array <string> ...$_args Array of arguments to escape.
      *
      * @return string Escaped call to git.
      */
-    protected function gitCall(...$args)
+    protected function gitCall($_args)
     {
         return sprintf(
             '%s %s %s %s',
             static::ENCODING_ENV,
             static::GIT_BINARY,
             "--git-dir={$this->root}/.git --work-tree={$this->root}",
-            implode(' ', $args)
+            implode(' ', func_get_args())
         );
     }
 

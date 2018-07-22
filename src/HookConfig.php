@@ -21,7 +21,7 @@ class HookConfig
      *
      * @since 0.1.0
      */
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * Add an entry to the configuration data.
