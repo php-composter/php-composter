@@ -39,7 +39,13 @@ You should not need to install this package directly. It should come as a depend
     > Check your PHP source code for WordPress Coding Standards compliance before committing.
     >
     > Thanks to [Gabor Javorszky](https://github.com/javorszky) for contributing this action.
+    
+* **[PHP Composter PHPCS Drupal](https://github.com/NickWilde1990/php-composter-phpcs-drupal)**
 
+    > Check your source code for Drupal Coding Standards compliance before committing.
+    >
+    > Action by [Nick Wilde](https://github.com/NickWilde1990).
+    
 * **PHP Composter PHPUnit** _(coming soon)_
 
     > Run a PHPUnit test suite before committing.
