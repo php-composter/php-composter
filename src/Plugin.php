@@ -209,6 +209,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
         foreach (Hook::getSupportedHooks() as $githook) {
             $hookPath = $hooksPath . $githook;
+            if (is_link($hookPath)) {
+                continue;
+            }
             if (static::$io->isDebug()) {
                 static::$io->write(sprintf(
                     'Symlinking %1$s to %2$s',
