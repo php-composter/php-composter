@@ -143,7 +143,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * uninstalled, but also before it gets upgraded to a new version
      * so the old one can be deactivated and the new one activated.
      *
-     * @since 0.5.0
+     * @since 0.4.0
      *
      * @param Composer    $composer Reference to the Composer instance.
      * @param IOInterface $io       Reference to the IO interface.
@@ -167,6 +167,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      * Prepare the plugin to be uninstalled.
      *
      * This will be called after deactivate.
+     *
+     * @since 0.4.0
      *
      * @param Composer    $composer Reference to the Composer instance.
      * @param IOInterface $io       Reference to the IO interface.
