@@ -118,6 +118,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
      *
      * @param Composer    $composer Reference to the Composer instance.
      * @param IOInterface $io       Reference to the IO interface.
+     * @return void
      */
     public function activate(Composer $composer, IOInterface $io)
     {
@@ -125,6 +126,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         if (static::$io->isVerbose()) {
             static::$io->write('Activating PHP Composter plugin', true);
         }
+
         $installer = new Installer(static::$io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
 
@@ -132,6 +134,47 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->cleanUp($filesystem);
         $this->linkBootstrapFiles($filesystem);
         $this->createGitHooks($filesystem);
+    }
+
+    /**
+     * Remove any hooks from Composer.
+     *
+     * This will be called when a plugin is deactivated before being
+     * uninstalled, but also before it gets upgraded to a new version
+     * so the old one can be deactivated and the new one activated.
+     *
+     * @since 0.5.0
+     *
+     * @param Composer    $composer Reference to the Composer instance.
+     * @param IOInterface $io       Reference to the IO interface.
+     * @return void
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        static::$io = $io;
+        if (static::$io->isVerbose()) {
+            static::$io->write('Deactivating PHP Composter plugin', true);
+        }
+
+        $installer = $composer->getInstallationManager()->getInstaller(Installer::TYPE);
+        $composer->getInstallationManager()->removeInstaller($installer);
+
+        $filesystem = new Filesystem();
+        $this->cleanUp($filesystem);
+    }
+
+    /**
+     * Prepare the plugin to be uninstalled.
+     *
+     * This will be called after deactivate.
+     *
+     * @param Composer    $composer Reference to the Composer instance.
+     * @param IOInterface $io       Reference to the IO interface.
+     * @return void
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // Nothing needs to be done here.
     }
 
     /**

@@ -20,13 +20,13 @@
 		"docs"   : "https://github.com/php-composter/php-composter/blob/master/README.md"
 	},
 	"require"           : {
-		"php"                 : "^5.4 || ^7.0",
+		"php"                 : "^5.4 || ^7 || ^8",
+		"composer/composer" : "^1 || ^2",
 		"composer/installers" : "^1",
-		"composer/composer"   : "^1",
-		"composer-plugin-api" : "^1"
+		"composer-plugin-api" : "^1 || ^2"
 	},
 	"require-dev"       : {
-		"phpunit/phpunit" : "5.3.*"
+		"yoast/phpunit-polyfills": "^1.0"
 	},
 	"autoload"          : {
 		"psr-4" : {
@@ -37,9 +37,6 @@
 		"psr-4" : {
 			"PHPComposter\\Tests\\" : "tests/src/"
 		}
-	},
-	"config"            : {
-		"optimize-autoloader" : true
 	},
 	"extra"             : {
 		"class" : "PHPComposter\\PHPComposter\\Plugin"

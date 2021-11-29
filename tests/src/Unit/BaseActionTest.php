@@ -42,7 +42,7 @@ class BaseActionTest extends TestCase
      *
      * @since 0.3.0
      */
-    public function setUp()
+    public function set_up()
     {
         $this->fixtures = dirname(dirname(__DIR__)) . '/fixtures';
     }
@@ -52,7 +52,7 @@ class BaseActionTest extends TestCase
      *
      * @since 0.3.0
      */
-    public function tearDown()
+    public function tear_down()
     {
         $folder = escapeshellarg("{$this->fixtures}/folder1");
         exec(BaseAction::ENCODING_ENV . " rm -rf {$folder}/.git");

@@ -29,9 +29,9 @@ class PathsTest extends TestCase
     public function testGetPathReturnsMatchingStrings($key, $expectedFormat)
     {
         $path = Paths::getPath($key);
-        $this->assertInternalType('string', $path);
+        $this->assertIsString($path);
         $this->assertNotEmpty($path);
-        $this->assertRegExp($expectedFormat, $path);
+        $this->assertMatchesRegularExpression($expectedFormat, $path);
     }
 
     /**

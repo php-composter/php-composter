@@ -4,6 +4,7 @@
 ## Package Managers
 composer.phar
 /vendor/
+composer.lock
 
 ## Test Suite
 /build/

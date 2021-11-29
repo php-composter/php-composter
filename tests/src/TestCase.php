@@ -10,6 +10,8 @@
 
 namespace PHPComposter\Tests;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+use Yoast\PHPUnitPolyfills\TestCases\TestCase as PolyfilledTestCase;
+
+class TestCase extends PolyfilledTestCase
 {
 }
